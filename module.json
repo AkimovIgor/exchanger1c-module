@@ -1,0 +1,14 @@
+{
+    "name": "Exchanger1C",
+    "alias": "exchanger1c",
+    "image": "/modules/exchanger1c/img/1C.png",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Exchanger1C\\Providers\\Exchanger1CServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
