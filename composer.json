@@ -24,5 +24,8 @@
         "psr-4": {
             "Modules\\Exchanger1C\\": ""
         }
+    },
+    "require": {
+        "bigperson/exchange1c": "1.1.1"
     }
 }
