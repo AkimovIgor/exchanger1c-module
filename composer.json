@@ -26,6 +26,6 @@
         }
     },
     "require": {
-        "bigperson/exchange1c": "1.1.1"
+        "bigperson/laravel-exchange1c": "2.0.0"
     }
 }
