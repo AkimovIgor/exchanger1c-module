@@ -84,13 +84,11 @@ class Offer extends Model implements OfferInterface
 
     public function prices()
     {
-        return $this->belongsToMany(Price::class)
-            ->using(OfferPrice::class);
+        return $this->belongsToMany(Price::class, 'altrp_exchanger1c_offer_prices');
     }
 
     public function specifications()
     {
-        return $this->belongsToMany(Specification::class)
-            ->using(OfferSpecification::class);
+        return $this->belongsToMany(Specification::class, 'altrp_exchanger1c_offer_spec');
     }
 }

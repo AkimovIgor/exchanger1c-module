@@ -15,8 +15,8 @@ class CreateAltrpExchanger1COrderOffersTable extends Migration
         Schema::create('altrp_exchanger1c_order_offers', function (Blueprint $table) {
             $table->integer('order_id')->unsigned();
             $table->integer('offer_id')->unsigned();
-            $table->float('count', 10, 3);
-            $table->float('sum', 10, 2);
+            $table->decimal('count', 10, 3);
+            $table->decimal('sum', 10, 2);
             $table->integer('price_type_id')->unsigned();
 
             $table->primary([

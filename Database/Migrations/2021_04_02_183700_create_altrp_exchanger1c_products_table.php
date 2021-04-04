@@ -17,10 +17,23 @@ class CreateAltrpExchanger1CProductsTable extends Migration
             $table->string('name', 255);
             $table->string('article', 255);
             $table->string('description', 255)->nullable();
-            $table->string('accounting_id', 255);
-            $table->integer('group_id')->unsigned();
-            $table->integer('catalog_id')->unsigned();
-            $table->boolean('is_active');
+            $table->string('accounting_id', 255)->unique();
+            $table->integer('group_id')->unsigned()->nullable();
+
+            $table->foreign('group_id')
+                ->references('id')
+                ->on('altrp_exchanger1c_groups');
+
+            $table->integer('catalog_id')->unsigned()->nullable();
+
+            $table->foreign('catalog_id')
+                ->references('id')
+                ->on('altrp_exchanger1c_catalogs');
+
+            $table->boolean('is_active')
+                ->nullable(false)
+                ->default(true);
+
             $table->timestamps();
         });
     }

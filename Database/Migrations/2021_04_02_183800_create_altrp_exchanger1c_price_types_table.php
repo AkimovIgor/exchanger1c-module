@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateAltrpExchanger1CPricesTable extends Migration
+class CreateAltrpExchanger1CPriceTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreateAltrpExchanger1CPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('altrp_exchanger1c_prices', function (Blueprint $table) {
+        Schema::create('altrp_exchanger1c_price_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('performance', 255);
-            $table->float('value', 10, 2);
+            $table->string('accounting_id', 255)->unique();
+            $table->string('name', 255);
             $table->string('currency', 255);
-            $table->double('rate', 255);
-            $table->integer('type_id')->unsigned()->nullable();
         });
     }
 
@@ -29,6 +27,6 @@ class CreateAltrpExchanger1CPricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('altrp_exchanger1c_prices');
+        Schema::dropIfExists('altrp_exchanger1c_price_types');
     }
 }

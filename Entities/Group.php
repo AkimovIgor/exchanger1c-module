@@ -11,17 +11,6 @@ class Group extends Model implements GroupInterface
 {
     protected $table = 'altrp_exchanger1c_groups';
 
-
-    public static function createTree1c($groups)
-    {
-        foreach ($groups as $group) {
-            self::createByML($group);
-            if ($children = $group->getChildren()) {
-                self::createTree1c($children);
-            }
-        }
-    }
-
     /**
      * Создаём группу по модели группы CommerceML
      * проверяем все дерево родителей группы, если родителя нет в базе - создаём
@@ -48,6 +37,24 @@ class Group extends Model implements GroupInterface
         }
         $model->save();
         return $model;
+    }
+
+    /**
+     * @param \Zenwalker\CommerceML\Model\Group[] $groups
+     */
+    public static function createTree1c($groups)
+    {
+        foreach ($groups as $group) {
+            self::createByML($group);
+            if ($children = $group->getChildren()) {
+                self::createTree1c($children);
+            }
+        }
+    }
+
+    public function offers()
+    {
+        return Offer::with('products')->where('product.group_id', $this->id)->get();
     }
 
     /**

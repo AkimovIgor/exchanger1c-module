@@ -11,22 +11,27 @@ class Property extends Model
 
     public static function createByML(\Zenwalker\CommerceML\Model\Property $property)
     {
-        /**
-         * @var \Zenwalker\CommerceML\Model\Group $parent
-         */
-        if (!$model = Property::where('accounting_id', $property->id)->first()) {
+        if (!$model = self::where('accounting_id', $property->id)->first()) {
             $model = new self;
             $model->accounting_id = $property->id;
+            $model->name = $property->name;
+            $model->save();
         }
-        $model->name = $property->name;
-        if ($parent = $property->getParent()) {
-            $parentModel = self::createByML($parent);
-            $model->parent_id = $parentModel->id;
-            unset($parentModel);
-        } else {
-            $model->parent_id = null;
-        }
-        $model->save();
         return $model;
+    }
+
+    public function propertyValues()
+    {
+        return $this->hasMany(PropertyValue::class, 'property_id');
+    }
+
+    public function productProperties()
+    {
+        return $this->hasMany(ProductProperty::class, 'property_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'altrp_exchanger1c_product_props');
     }
 }

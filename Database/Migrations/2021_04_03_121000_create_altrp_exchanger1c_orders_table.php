@@ -16,7 +16,12 @@ class CreateAltrpExchanger1COrdersTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->integer('status_id')->unsigned();
-            $table->float('sum', 10, 2);
+
+            $table->foreign('status_id')
+                ->references('id')
+                ->on('altrp_exchanger1c_order_statuses');
+
+            $table->decimal('sum', 10, 2);
             $table->timestamps();
         });
     }

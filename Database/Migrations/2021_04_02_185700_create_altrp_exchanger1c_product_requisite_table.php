@@ -27,7 +27,8 @@ class CreateAltrpExchanger1CProductRequisiteTable extends Migration
                 'product_id',
                 'requisite_id'
             ], '1c');
-            $table->string('value', 1024);
+
+            $table->string('value', 1024)->nullable();
         });
     }
 

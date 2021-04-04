@@ -53,6 +53,9 @@ class Exchanger1CServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             module_path($this->moduleName, 'Config/app.php'), 'app'
         );
+        $this->mergeConfigFrom(
+            module_path($this->moduleName, 'Config/exchange1c.php'), 'exchange1c'
+        );
     }
 
     /**

@@ -29,12 +29,13 @@ class CreateAltrpExchanger1CProductPropTable extends Migration
                 'property_id'
             ], '1c');
 
-            $table->integer('property_value_id')->unsigned();
+            $table->integer('property_value_id')->unsigned()->nullable();
+
             $table->foreign('property_value_id', 'pv')
                 ->references('id')
                 ->on('altrp_exchanger1c_prop_values');
 
-            $table->string('value', 255);
+            $table->string('value', 255)->nullable();
         });
     }
 

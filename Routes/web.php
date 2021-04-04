@@ -14,3 +14,9 @@
 Route::prefix('exchanger1c')->group(function() {
     Route::get('/', 'Exchanger1CController@index');
 });
+
+$path = '1c_exchanger';
+
+Route::group(['middleware' => [\Illuminate\Session\Middleware\StartSession::class]], function () use ($path) {
+    Route::match(['get', 'post'], $path, 'Exchanger1CController@request');
+});

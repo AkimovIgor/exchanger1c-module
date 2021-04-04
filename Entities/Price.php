@@ -18,7 +18,7 @@ class Price extends Model
      */
     public static function createByMl($price, $offer, $type)
     {
-        if (!$priceModel = $offer->prices->where('type_id', $type->id)->first()) {
+        if (!$priceModel = $offer->prices()->where('type_id', $type->id)->first()) {
             $priceModel = new self();
         }
         $priceModel->value = $price->cost;

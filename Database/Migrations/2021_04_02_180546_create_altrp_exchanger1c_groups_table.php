@@ -14,9 +14,16 @@ class CreateAltrpExchanger1CGroupsTable extends Migration
     {
         Schema::create('altrp_exchanger1c_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->comment('Наименование группы');
-            $table->integer('parent_id')->unsigned()->nullable()->comment('Родительская группа');
-            $table->string('accounting_id')->unique()->comment('Код в 1С');
+            $table->string('name', 255);
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->foreign('parent_id')
+                ->references('id')
+                ->on('altrp_exchanger1c_groups');
+            $table->string('accounting_id')->unique();
+            $table->timestamps();
+            $table->boolean('is_active')
+                ->nullable(false)
+                ->default(true);
         });
     }
 

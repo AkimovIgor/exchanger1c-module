@@ -5,7 +5,7 @@ return [
     'import_dir'    => storage_path('app/1c_exchange'),
     'login'         => env('EXCHANGER1C_LOGIN', 'admin'),
     'password'      => env('EXCHANGER1C_PASSWORD', 'admin'),
-    'use_zip'       => false,
+    'use_zip'       => true,
     'file_part'     => 0,
     'models'        => [
         \Bigperson\Exchange1C\Interfaces\GroupInterface::class   => \Modules\Exchanger1C\Entities\Group::class,
