@@ -3,21 +3,59 @@
 namespace Modules\Exchanger1C\Http\Controllers;
 
 use Bigperson\Exchange1C\Exceptions\Exchange1CException;
-use Bigperson\Exchange1C\Services\CatalogService;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use Jackiedo\DotenvEditor\Facades\DotenvEditor;
+use Modules\Exchanger1C\Services\CatalogService;
 
 class Exchanger1CController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * @return bool|array
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
+//        $image = config('exchange1c.import_dir') . DIRECTORY_SEPARATOR . 'import_files/de/dee6e1d055bc11d9848a00112f43529a_470c76f995f611eb8b0700d861dc7c33.jpg';
+//        $file = File::name($image);
+//
+//        dd($file);
 
+        $path = scandir(config('exchange1c.import_dir'));
+        $filesAndCatalogs = array_diff($path, ['.', '..']);
+        $files = [];
+        foreach ($filesAndCatalogs as $file) {
+            if (Str::contains($file, '.'))
+                $files[] = $file;
+        }
+
+        return view('exchanger1c::index', compact('files'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveConfig(Request $request)
+    {
+        $data = $request->all();
+        foreach ($data as $key => $value) {
+            try{
+                if ($key == '_token') continue;
+                DotenvEditor::setKey('EXCHANGER1C_' . Str::upper($key), $value);
+                DotenvEditor::save();
+            } catch (\Exception $e){
+                return redirect()->back()->withErrors([
+                    'message' => 'Failed'
+                ]);
+            }
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -92,7 +130,7 @@ class Exchanger1CController extends Controller
         $type = $request->get('type');
 
         try {
-            if ($type == 'catalog') {
+            if ($type == 'catalog' || $type == 'file') {
                 if (!method_exists($service, $mode)) {
                     throw new Exchange1CException('not correct request, class ExchangeCML not found');
                 }

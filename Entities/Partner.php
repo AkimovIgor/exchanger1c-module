@@ -11,7 +11,6 @@ class Partner extends Model implements PartnerInterface
 {
     protected $table = 'altrp_exchanger1c_partners';
 
-
     public function getExportFields1c($context = null)
     {
         return [

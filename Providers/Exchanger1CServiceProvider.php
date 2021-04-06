@@ -28,6 +28,7 @@ class Exchanger1CServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+        $this->registerAssets();
     }
 
     /**
@@ -38,6 +39,18 @@ class Exchanger1CServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+    }
+
+    /**
+     * Register assets.
+     *
+     * @return void
+     */
+    protected function registerAssets()
+    {
+        $this->publishes([
+            module_path($this->moduleName, 'Resources/assets') => public_path('modules/' . $this->moduleNameLower),
+        ], 'public');
     }
 
     /**

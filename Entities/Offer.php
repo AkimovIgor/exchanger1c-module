@@ -25,17 +25,38 @@ class Offer extends Model implements OfferInterface
 
     public function getExportFields1c($context = null)
     {
-        // TODO: Implement getExportFields1c() method.
+        /**
+         * @var Document $context
+         */
+        $pv = DocumentOffer::where([
+            ['offer_id', $this->id],
+            ['order_id', $context->id]
+        ])->first();
+        return [
+            'Ид' => $this->accounting_id,
+            'Наименование' => $this->name,
+            'ЦенаЗаЕдиницу' => $this->getMainPrice()->value,
+            'Сумма' => $pv->sum,
+            'Количество' => $pv->count,
+            'БазоваяЕдиница' => [
+                '@content' => 'шт',
+                '@attributes' => [
+                    'Код' => '796',
+                    'НаименованиеПолное' => 'Штука',
+                    'МеждународноеСокращение' => 'PCE'
+                ]
+            ]
+        ];
     }
 
     public static function getIdFieldName1c()
     {
-        // TODO: Implement getIdFieldName1c() method.
+        return 'accounting_id';
     }
 
     public function getPrimaryKey()
     {
-        // TODO: Implement getPrimaryKey() method.
+        return 'id';
     }
 
     public function getGroup1c()
@@ -57,7 +78,8 @@ class Offer extends Model implements OfferInterface
     {
         $priceType = PriceType::where('accounting_id', $price->getType()->id);
         $priceModel = Price::createByMl($price, $this, $priceType);
-        $this->prices()->attach($priceModel, [], false);
+        $this->prices()->detach($priceModel);
+        $this->prices()->attach($priceModel);
     }
 
     public static function createPriceTypes1c($types)
@@ -70,6 +92,7 @@ class Offer extends Model implements OfferInterface
     public function setSpecification1c($specification)
     {
         $specificationModel = Specification::createByMl($specification);
+        $this->specifications()->detach($specificationModel);
         $this->specifications()->attach(
             $specificationModel,
             ['value' => (string)$specification->Значение],
@@ -90,5 +113,10 @@ class Offer extends Model implements OfferInterface
     public function specifications()
     {
         return $this->belongsToMany(Specification::class, 'altrp_exchanger1c_offer_spec');
+    }
+
+    protected function getMainPrice()
+    {
+        return $this->prices()->first();
     }
 }

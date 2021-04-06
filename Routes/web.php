@@ -11,8 +11,9 @@
 |
 */
 
-Route::prefix('exchanger1c')->group(function() {
-    Route::get('/', 'Exchanger1CController@index');
+Route::prefix('plugins')->group(function() {
+    Route::get('/exchanger1c', 'Exchanger1CController@index');
+    Route::post('/exchange1c/config', 'Exchanger1CController@saveConfig');
 });
 
 $path = '1c_exchanger';

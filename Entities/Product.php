@@ -7,6 +7,7 @@ namespace Modules\Exchanger1C\Entities;
 use App\Media;
 use Bigperson\Exchange1C\Interfaces\ProductInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Zenwalker\CommerceML\CommerceML;
 
 class Product extends Model implements ProductInterface
@@ -77,10 +78,12 @@ class Product extends Model implements ProductInterface
 
     public function addImage1c($path, $caption)
     {
-//        if (!$this->getImages()->where('filename', $path)->first()) {
-        $media = uploadMedia($path, $caption);
-        $this->images()->attach($media, ['caption' => $caption], false);
-//        }
+        $pathName = File::name($path);
+        if (!$this->images()->where('filename', 'like', "%{$pathName}%")->first()) {
+            $media = uploadMedia($path);
+            $this->images()->detach($media);
+            $this->images()->attach($media, ['caption' => $caption]);
+        }
     }
 
     public function getGroup1c()

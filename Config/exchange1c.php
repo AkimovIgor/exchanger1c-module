@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'exchange_path' => '1c_exchange',
-    'import_dir'    => storage_path('app/1c_exchange'),
+    'exchange_path' => env('EXCHANGER1C_EXCHANGE_PATH', '1c_exchanger'),
+    'import_dir'    => storage_path(env('EXCHANGER1C_IMPORT_DIR', 'app/1c_exchange')),
     'login'         => env('EXCHANGER1C_LOGIN', 'admin'),
     'password'      => env('EXCHANGER1C_PASSWORD', 'admin'),
-    'use_zip'       => true,
-    'file_part'     => 0,
+    'use_zip'       => env('EXCHANGER1C_USE_ZIP', true),
+    'file_part'     => (int)env('EXCHANGER1C_FILE_PART', 0),
     'models'        => [
         \Bigperson\Exchange1C\Interfaces\GroupInterface::class   => \Modules\Exchanger1C\Entities\Group::class,
         \Bigperson\Exchange1C\Interfaces\ProductInterface::class => \Modules\Exchanger1C\Entities\Product::class,
